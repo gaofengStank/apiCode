@@ -1,0 +1,429 @@
+<% layout('/layouts/default.html', {title: '会员表管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('会员表管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('shop:shopUserMember:edit')){ %>
+					<a href="${ctx}/shop/shopUserMember/form" class="btn btn-default btnTool" title="${text('新增会员表')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${shopUserMember}" action="${ctx}/shop/shopUserMember/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('注册类型')}：</label>
+					<div class="control-inline">
+						<#form:input path="regType" maxlength="20" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('微信服务号openid')}：</label>
+					<div class="control-inline">
+						<#form:input path="wechatOpenid" maxlength="128" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('微信小程序openid')}：</label>
+					<div class="control-inline">
+						<#form:input path="wechatOpenidXcx" maxlength="128" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('微信电脑端openid')}：</label>
+					<div class="control-inline">
+						<#form:input path="wechatOpenidPc" maxlength="200" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('新浪微博openid')}：</label>
+					<div class="control-inline">
+						<#form:input path="sinaOpenid" maxlength="200" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('qq登录openid')}：</label>
+					<div class="control-inline">
+						<#form:input path="qqOpenid" maxlength="200" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否有订阅服务号，0否，1是')}：</label>
+					<div class="control-inline">
+						<#form:input path="wechatSubscribe" maxlength="5" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('用户名')}：</label>
+					<div class="control-inline">
+						<#form:input path="username" maxlength="20" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('密码')}：</label>
+					<div class="control-inline">
+						<#form:input path="password" maxlength="128" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否审核')}：</label>
+					<div class="control-inline">
+						<#form:input path="checked" maxlength="1" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('昵称')}：</label>
+					<div class="control-inline">
+						<#form:input path="nickname" maxlength="50" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('性别')}：</label>
+					<div class="control-inline">
+						<#form:input path="sex" maxlength="111" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('会员头像')}：</label>
+					<div class="control-inline">
+						<#form:input path="userpic" maxlength="255" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否是代理商')}：</label>
+					<div class="control-inline">
+						<#form:input path="isAgent" maxlength="11" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('上级id')}：</label>
+					<div class="control-inline">
+						<#form:input path="pid" maxlength="8" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('代理级别')}：</label>
+					<div class="control-inline">
+						<#form:input path="agentLevel" maxlength="8" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('代理商奖金')}：</label>
+					<div class="control-inline">
+						<#form:input path="totalBonus" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('积分')}：</label>
+					<div class="control-inline">
+						<#form:input path="points" maxlength="10" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('已经兑换积分')}：</label>
+					<div class="control-inline">
+						<#form:input path="cashPoints" maxlength="10" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('预存款余额')}：</label>
+					<div class="control-inline">
+						<#form:input path="predeposit" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('已使用预存款')}：</label>
+					<div class="control-inline">
+						<#form:input path="usePredeposit" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('收藏的数量')}：</label>
+					<div class="control-inline">
+						<#form:input path="wish" maxlength="5" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('注册时间')}：</label>
+					<div class="control-inline">
+						<#form:input path="regdate" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('最后登录时间')}：</label>
+					<div class="control-inline">
+						<#form:input path="lastdate" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('注册ip')}：</label>
+					<div class="control-inline">
+						<#form:input path="regip" maxlength="15" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('上次登录ip')}：</label>
+					<div class="control-inline">
+						<#form:input path="lastip" maxlength="15" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('登陆次数')}：</label>
+					<div class="control-inline">
+						<#form:input path="loginnum" maxlength="5" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('电子邮箱')}：</label>
+					<div class="control-inline">
+						<#form:input path="email" maxlength="32" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('telephone')}：</label>
+					<div class="control-inline">
+						<#form:input path="telephone" maxlength="20" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('用户组id')}：</label>
+					<div class="control-inline">
+						<#form:input path="groupid" maxlength="3" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('地区id')}：</label>
+					<div class="control-inline">
+						<#form:input path="areaid" maxlength="111" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否有短消息')}：</label>
+					<div class="control-inline">
+						<#form:input path="message" maxlength="1" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('maintain_date')}：</label>
+					<div class="control-inline">
+						<#form:input path="maintainDate" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('insurance_date')}：</label>
+					<div class="control-inline">
+						<#form:input path="insuranceDate" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否锁定')}：</label>
+					<div class="control-inline">
+						<#form:input path="islock" maxlength="1" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('parame1')}：</label>
+					<div class="control-inline">
+						<#form:input path="parame1" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('用户类型')}：</label>
+					<div class="control-inline">
+						<#form:input path="usertype" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('realname')}：</label>
+					<div class="control-inline">
+						<#form:input path="realname" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('注销 事件')}：</label>
+					<div class="control-inline">
+						<#form:input path="logoutdate" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('city')}：</label>
+					<div class="control-inline">
+						<#form:input path="city" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('parentid')}：</label>
+					<div class="control-inline">
+						<#form:input path="parentid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('car_status')}：</label>
+					<div class="control-inline">
+						<#form:input path="carStatus" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('编号')}：</label>
+					<div class="control-inline">
+						<#form:input path="postid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('companyid')}：</label>
+					<div class="control-inline">
+						<#form:input path="companyid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('isshiming')}：</label>
+					<div class="control-inline">
+						<#form:input path="isshiming" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('status1')}：</label>
+					<div class="control-inline">
+						<#form:input path="status1" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('checkuser')}：</label>
+					<div class="control-inline">
+						<#form:input path="checkuser" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('checkdate')}：</label>
+					<div class="control-inline">
+						<#form:input path="checkdate" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('totalmney')}：</label>
+					<div class="control-inline">
+						<#form:input path="totalmney" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('txpasswd')}：</label>
+					<div class="control-inline">
+						<#form:input path="txpasswd" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('basecity')}：</label>
+					<div class="control-inline">
+						<#form:input path="basecity" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('userpaylevel')}：</label>
+					<div class="control-inline">
+						<#form:input path="userpaylevel" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("注册类型")}', name:'regType', index:'a.reg_type', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/shop/shopUserMember/form?uid='+row.uid+'" class="btnList" data-title="${text("编辑会员表")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("微信服务号openid")}', name:'wechatOpenid', index:'a.wechat_openid', width:150, align:"left"},
+		{header:'${text("微信小程序openid")}', name:'wechatOpenidXcx', index:'a.wechat_openid_xcx', width:150, align:"left"},
+		{header:'${text("微信电脑端openid")}', name:'wechatOpenidPc', index:'a.wechat_openid_pc', width:150, align:"left"},
+		{header:'${text("新浪微博openid")}', name:'sinaOpenid', index:'a.sina_openid', width:150, align:"left"},
+		{header:'${text("qq登录openid")}', name:'qqOpenid', index:'a.qq_openid', width:150, align:"left"},
+		{header:'${text("是否有订阅服务号，0否，1是")}', name:'wechatSubscribe', index:'a.wechat_subscribe', width:150, align:"center"},
+		{header:'${text("用户名")}', name:'username', index:'a.username', width:150, align:"left"},
+		{header:'${text("密码")}', name:'password', index:'a.password', width:150, align:"left"},
+		{header:'${text("是否审核")}', name:'checked', index:'a.checked', width:150, align:"center"},
+		{header:'${text("昵称")}', name:'nickname', index:'a.nickname', width:150, align:"left"},
+		{header:'${text("性别")}', name:'sex', index:'a.sex', width:150, align:"left"},
+		{header:'${text("会员头像")}', name:'userpic', index:'a.userpic', width:150, align:"left"},
+		{header:'${text("是否是代理商")}', name:'isAgent', index:'a.is_agent', width:150, align:"center"},
+		{header:'${text("上级id")}', name:'pid', index:'a.pid', width:150, align:"center"},
+		{header:'${text("代理级别")}', name:'agentLevel', index:'a.agent_level', width:150, align:"center"},
+		{header:'${text("代理商奖金")}', name:'totalBonus', index:'a.total_bonus', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("积分")}', name:'points', index:'a.points', width:150, align:"center"},
+		{header:'${text("已经兑换积分")}', name:'cashPoints', index:'a.cash_points', width:150, align:"center"},
+		{header:'${text("预存款余额")}', name:'predeposit', index:'a.predeposit', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("已使用预存款")}', name:'usePredeposit', index:'a.use_predeposit', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("收藏的数量")}', name:'wish', index:'a.wish', width:150, align:"center"},
+		{header:'${text("注册时间")}', name:'regdate', index:'a.regdate', width:150, align:"center"},
+		{header:'${text("最后登录时间")}', name:'lastdate', index:'a.lastdate', width:150, align:"center"},
+		{header:'${text("注册ip")}', name:'regip', index:'a.regip', width:150, align:"left"},
+		{header:'${text("上次登录ip")}', name:'lastip', index:'a.lastip', width:150, align:"left"},
+		{header:'${text("登陆次数")}', name:'loginnum', index:'a.loginnum', width:150, align:"center"},
+		{header:'${text("电子邮箱")}', name:'email', index:'a.email', width:150, align:"left"},
+		{header:'${text("telephone")}', name:'telephone', index:'a.telephone', width:150, align:"left"},
+		{header:'${text("用户组id")}', name:'groupid', index:'a.groupid', width:150, align:"center"},
+		{header:'${text("地区id")}', name:'areaid', index:'a.areaid', width:150, align:"left"},
+		{header:'${text("是否有短消息")}', name:'message', index:'a.message', width:150, align:"center"},
+		{header:'${text("maintain_date")}', name:'maintainDate', index:'a.maintain_date', width:150, align:"center"},
+		{header:'${text("insurance_date")}', name:'insuranceDate', index:'a.insurance_date', width:150, align:"center"},
+		{header:'${text("是否锁定")}', name:'islock', index:'a.islock', width:150, align:"center"},
+		{header:'${text("parame1")}', name:'parame1', index:'a.parame1', width:150, align:"left"},
+		{header:'${text("用户类型")}', name:'usertype', index:'a.usertype', width:150, align:"left"},
+		{header:'${text("realname")}', name:'realname', index:'a.realname', width:150, align:"left"},
+		{header:'${text("注销 事件")}', name:'logoutdate', index:'a.logoutdate', width:150, align:"center"},
+		{header:'${text("city")}', name:'city', index:'a.city', width:150, align:"left"},
+		{header:'${text("parentid")}', name:'parentid', index:'a.parentid', width:150, align:"left"},
+		{header:'${text("car_status")}', name:'carStatus', index:'a.car_status', width:150, align:"left"},
+		{header:'${text("编号")}', name:'postid', index:'a.postid', width:150, align:"left"},
+		{header:'${text("companyid")}', name:'companyid', index:'a.companyid', width:150, align:"left"},
+		{header:'${text("isshiming")}', name:'isshiming', index:'a.isshiming', width:150, align:"left"},
+		{header:'${text("status1")}', name:'status1', index:'a.status1', width:150, align:"left"},
+		{header:'${text("checkuser")}', name:'checkuser', index:'a.checkuser', width:150, align:"left"},
+		{header:'${text("checkdate")}', name:'checkdate', index:'a.checkdate', width:150, align:"center"},
+		{header:'${text("totalmney")}', name:'totalmney', index:'a.totalmney', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("txpasswd")}', name:'txpasswd', index:'a.txpasswd', width:150, align:"left"},
+		{header:'${text("basecity")}', name:'basecity', index:'a.basecity', width:150, align:"left"},
+		{header:'${text("userpaylevel")}', name:'userpaylevel', index:'a.userpaylevel', width:150, align:"left"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			<% if(hasPermi('shop:shopUserMember:edit')){ %>
+				actions.push('<a href="${ctx}/shop/shopUserMember/form?uid='+row.uid+'" class="btnList" title="${text("编辑会员表")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/shop/shopUserMember/delete?uid='+row.uid+'" class="btnList" title="${text("删除会员表")}" data-confirm="${text("确认要删除该会员表吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

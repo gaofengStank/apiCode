@@ -1,0 +1,174 @@
+<% layout('/layouts/default.html', {title: 'tab_order_comment管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('tab_order_comment管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('tab:tabOrderComment:edit')){ %>
+					<a href="${ctx}/tab/tabOrderComment/form" class="btn btn-default btnTool" title="${text('新增tab_order_comment')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${tabOrderComment}" action="${ctx}/tab/tabOrderComment/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('userid')}：</label>
+					<div class="control-inline">
+						<#form:input path="userid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('orderid')}：</label>
+					<div class="control-inline">
+						<#form:input path="orderid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('productid')}：</label>
+					<div class="control-inline">
+						<#form:input path="productid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('content')}：</label>
+					<div class="control-inline">
+						<#form:input path="content" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('createtime')}：</label>
+					<div class="control-inline">
+						<#form:input path="createtime" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('parame1')}：</label>
+					<div class="control-inline">
+						<#form:input path="parame1" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('parame2')}：</label>
+					<div class="control-inline">
+						<#form:input path="parame2" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('parame3')}：</label>
+					<div class="control-inline">
+						<#form:input path="parame3" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('leval')}：</label>
+					<div class="control-inline">
+						<#form:input path="leval" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('bussinessid')}：</label>
+					<div class="control-inline">
+						<#form:input path="bussinessid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('source')}：</label>
+					<div class="control-inline">
+						<#form:input path="source" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('replay')}：</label>
+					<div class="control-inline">
+						<#form:input path="replay" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('replaydate')}：</label>
+					<div class="control-inline">
+						<#form:input path="replaydate" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('orderlistid')}：</label>
+					<div class="control-inline">
+						<#form:input path="orderlistid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('imgsrc')}：</label>
+					<div class="control-inline">
+						<#form:input path="imgsrc" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('昵称')}：</label>
+					<div class="control-inline">
+						<#form:input path="nickname" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('imglist')}：</label>
+					<div class="control-inline">
+						<#form:input path="imglist" maxlength="1000" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("userid")}', name:'userid', index:'a.userid', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/tab/tabOrderComment/form?rowid='+row.rowid+'" class="btnList" data-title="${text("编辑tab_order_comment")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("orderid")}', name:'orderid', index:'a.orderid', width:150, align:"left"},
+		{header:'${text("productid")}', name:'productid', index:'a.productid', width:150, align:"left"},
+		{header:'${text("content")}', name:'content', index:'a.content', width:150, align:"left"},
+		{header:'${text("createtime")}', name:'createtime', index:'a.createtime', width:150, align:"center"},
+		{header:'${text("parame1")}', name:'parame1', index:'a.parame1', width:150, align:"left"},
+		{header:'${text("parame2")}', name:'parame2', index:'a.parame2', width:150, align:"left"},
+		{header:'${text("parame3")}', name:'parame3', index:'a.parame3', width:150, align:"left"},
+		{header:'${text("leval")}', name:'leval', index:'a.leval', width:150, align:"left"},
+		{header:'${text("bussinessid")}', name:'bussinessid', index:'a.bussinessid', width:150, align:"left"},
+		{header:'${text("source")}', name:'source', index:'a.source', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("replay")}', name:'replay', index:'a.replay', width:150, align:"left"},
+		{header:'${text("replaydate")}', name:'replaydate', index:'a.replaydate', width:150, align:"center"},
+		{header:'${text("orderlistid")}', name:'orderlistid', index:'a.orderlistid', width:150, align:"left"},
+		{header:'${text("imgsrc")}', name:'imgsrc', index:'a.imgsrc', width:150, align:"left"},
+		{header:'${text("昵称")}', name:'nickname', index:'a.nickname', width:150, align:"left"},
+		{header:'${text("imglist")}', name:'imglist', index:'a.imglist', width:150, align:"left"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			<% if(hasPermi('tab:tabOrderComment:edit')){ %>
+				actions.push('<a href="${ctx}/tab/tabOrderComment/form?rowid='+row.rowid+'" class="btnList" title="${text("编辑tab_order_comment")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/tab/tabOrderComment/delete?rowid='+row.rowid+'" class="btnList" title="${text("删除tab_order_comment")}" data-confirm="${text("确认要删除该tab_order_comment吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

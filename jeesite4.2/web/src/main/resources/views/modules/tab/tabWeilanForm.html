@@ -1,0 +1,175 @@
+<% layout('/layouts/default.html', {title: 'tab_weilan管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('围栏管理')}
+			</div>
+			<div class="box-tools pull-right">
+ 				<% if(hasPermi('tab:tabWeilan:edit')){ %>
+  				
+					<a  onclick="addData()" class="btn btn-default " title="${text('新增tab_weilan')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${tabWeilan}" action="${ctx}/tab/tabWeilan/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('设备号')}：</label>
+					<div class="control-inline">
+						<#form:input path="imei" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+									<button id="search" type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+				
+			</#form:form>
+			<table id="dataGrid"></table>
+				<div id="container"></div> 
+			
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=67d8b4dfa279494e2e8b667af5e713d1"></script> 
+<style>
+	#container {  height: 500px; }  
+	
+</style>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("设备号")}', name:'imei', index:'a.imei', width:150, align:"left", frozen:true, form1atter: function(val, obj, row, act){
+			return '<a href="${ctx}/tab/tabWeilan/form?rowid='+row.rowid+'" class="btnList" data-title="${text("编辑tab_weilan")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("精度")}', name:'lon', index:'a.lon', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("纬度")}', name:'lat', index:'a.lat', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("距离")}', name:'lines2', index:'a.lines2', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("规则名称")}', name:'guize', index:'a.guize', width:150, align:"left" , formatter: function(val, obj, row, act){
+			return js.getDictLabel(${@DictUtils.getDictListJson('ces')}, val, '${text("未知")}', true);
+		}},
+		{header:'${text("创建时间")}', name:'createtime', index:'a.createtime', width:150, align:"center"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			<% if(hasPermi('tab:tabWeilan:edit')){ %>
+				actions.push('<a href="${ctx}/tab/tabWeilan/delete?rowid='+row.rowid+'" class="btnList" title="${text("删除tab_weilan")}" data-confirm="${text("确认要删除该tab_weilan吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+
+
+var map = new AMap.Map('container', {
+    zoom:20,//级别
+    center: [116.397428, 39.90923],//中心点坐标
+});
+
+var marker = new AMap.Marker({
+    position: new AMap.LngLat(116.39, 39.9),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+    title: '北京'
+});
+
+// 将创建的点标记添加到已有的地图实例：
+ marker = new AMap.Marker({
+            position: [116.406315,39.908775],
+            offset: new AMap.Pixel(-13, -30)
+        });
+        marker.setMap(map);
+map.on('click', showInfoClick);
+var  lat;
+var lon ; 
+function  showInfoClick(e){
+	   var text = '您在 [ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ] 的位置单击了地图！'
+	   ;
+	      lon  =  e.lnglat.getLng() ;
+	      lat  =  e.lnglat.getLat() ;
+	   if (marker) {
+           marker.setMap(null);
+           marker = null;
+       }
+	   if(circleMarker){
+	       circleMarker.setMap(null)
+
+	}
+	     marker = new AMap.Marker({
+	       position: new AMap.LngLat(lon, lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+	       title: '监控中心'
+	   });
+	   map.add(marker);
+	   
+
+}
+
+function  addData(){
+	 var frameId = window.frameElement && window.frameElement.id || '';
+	    console.log(frameId)
+	     	  window.localStorage.setItem("frameId",frameId);
+
+	    open  =  js.layer.open({
+	   	  type: 2,
+	   	  title: '添加监控信息',
+	   	  area: ['400px', '450px'],
+	   	  fixed: false, //不固定
+	   	  maxmin: true,
+	   	  content: '${ctx}/tab/tabWeilan/form2?ghdw='  
+	   	});	
+}
+var  circleMarker;
+function  saveChooseHt(v){
+	console.log(222);
+	if(circleMarker){
+	       circleMarker.setMap(null)
+
+	}
+	console.log(""+ lon+"," +lat);
+	var  d  = {
+			"center": [lon, lat]
+	}
+	   circleMarker = new AMap.CircleMarker({
+         center:[lon, lat],
+         radius:v,
+         strokeColor:'white',
+         strokeWeight:2,
+         strokeOpacity:0.33,
+         fillColor:'rgba(0,0,255,1)',
+         fillOpacity:0.5,
+         zIndex:10,
+         bubble:true,
+         cursor:'pointer',
+         clickable: true
+       })
+       circleMarker.setMap(map)
+}
+function   saveChooseHt2(v,v1,v2){
+ 
+	var url = "${ctx}/tab/tabWeilan/save";
+	var parame  ={
+			imei: 	$("#imei").val(),
+			lon : lon,
+			lat :lat,
+			lines2 :  v1,
+			guize : v2,
+			name :  v 
+	};
+	console.log(parame)
+	doAjax(url,"post",parame,function(){
+		$('#search').click(); 
+		js.layer.closeAll();
+	})
+}
+</script>

@@ -1,0 +1,80 @@
+<% layout('/layouts/default.html', {title: '手环信息管理管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('手环信息管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('tab:tabShouhuan:edit')){ %>
+					<a href="${ctx}/tab/tabShouhuan/form" class="btn btn-default btnTool" title="${text('新增手环信息管理')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${tabShouhuan}" action="${ctx}/tab/tabShouhuan/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('手环imei号')}：</label>
+					<div class="control-inline">
+						<#form:input path="imei" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('监护对象')}：</label>
+					<div class="control-inline">
+						<#form:input path="jhdx" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				  
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("手环imei号")}', name:'imei', index:'a.imei', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/tab/tabShouhuan/form?rowid='+row.rowid+'" class="btnList" data-title="${text("编辑手环信息管理")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("监护对象")}', name:'jhdx', index:'a.jhdx', width:150, align:"left"},
+		{header:'${text("心率")}', name:'xinlv', index:'a.xinlv', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("血压")}', name:'xueya', index:'a.xueya', width:150, align:"left"},
+		{header:'${text("血氧")}', name:'xueyang', index:'a.xueyang', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("体温")}', name:'tw', index:'a.tw', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("报警内容")}', name:'bjnr', index:'a.bjnr', width:150, align:"left"},
+		{header:'${text("创建时间")}', name:'createtime', index:'a.createtime', width:150, align:"center"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			<% if(hasPermi('tab:tabShouhuan:edit')){ %>
+				actions.push('<a href="${ctx}/tab/tabShouhuan/form?rowid='+row.rowid+'" class="btnList" title="${text("编辑手环信息管理")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/tab/tabShouhuan/form2?rowid='+row.rowid+'" class="btnList" title="${text("新增围栏信息")}"><i class="fa fa-map-marker"></i></a>&nbsp;');
+
+				actions.push('<a href="${ctx}/tab/tabShouhuan/delete?rowid='+row.rowid+'" class="btnList" title="${text("删除手环信息管理")}" data-confirm="${text("确认要删除该手环信息管理吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

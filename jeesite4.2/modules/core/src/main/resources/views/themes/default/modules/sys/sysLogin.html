@@ -1,0 +1,158 @@
+<% layout('/layouts/default.html', {title: '登录', libs: ['validate'], bodyClass: 'login-page'}){ %>
+<% include('/include/upgrade.html'){} // 如果客户浏览器版本过低，则显示浏览器升级提示。 %>
+<!-- <link rel="stylesheet" href="${ctxStatic}/icheck/1.0/square/blue.css?${_version}"> -->
+<link rel="stylesheet" href="${ctxStatic}/jquery-toastr/2.1/toastr.min.css?${_version}">
+ <link rel="stylesheet" href="${ctxStatic}/common/sysLogin2.css?${_version}">
+
+ <div class="login-box">
+	<div class="login-box-body">
+		<div class="login-left">
+			<div class="login-left-cont">
+				<h2 class="pb5"><b>直播电商管理系统</b></h2>
+				<div class="pt10">
+					版本：V1.0
+				</div>
+				<ul class="login-left-info">
+					<li>介绍1</li>
+					<li>采用主流技术，通俗易懂！天下武功，唯快不破！</li>
+					<li>介绍3</li>
+					<li>一直被模仿！ 从未被超越！ 选 java 没错！</li>
+				</ul><br/><br/><br/>
+				<div class="login-left-bottom">
+					联系我们： 
+				</div>
+			</div>
+		</div>
+		<div class="login-right">
+			<h2>
+				<b>登录</b>
+					<span class="login-tools">没有帐号？ 
+						<a href="/js/account/registerUser">点击注册</a>
+					</span>
+			</h2>
+		<#form:form id="loginForm" model="${user!}" action="${ctx}/login" method="post">
+			<h4 class="login-box-msg">${isNotBlank(message!)?message:text('欢迎回来')+'！'}</h4>
+					<div class="form-group has-feedback">
+				<span class="icon-user form-control-feedback" title="${text('登录账号')}"></span>
+				<#form:input type="text" name="username" class="form-control required"
+					data-msg-required="${text('请填写登录账号.')}" placeholder="${text('登录账号')}"
+					value="${cookie('rememberUserCode')}"/>
+			</div>
+				<div class="form-group has-feedback">
+				<span class="icon-lock form-control-feedback"
+					title="${text('登录密码，鼠标按下显示密码')}"
+					onmousedown="$('#password').attr('type','text')"
+					onmouseup="$('#password').attr('type','password')"
+					onmouseenter="$(this).removeClass('icon-lock').addClass('icon-eye')"
+					onmouseout="$(this).removeClass('icon-eye').addClass('icon-lock')"></span>
+				<#form:input type="password" name="password" class="form-control required"
+					data-msg-required="${text('请填写登录密码.')}" placeholder="${text('登录密码')}" autocomplete="off"/>
+			</div>
+				<div class="form-group has-feedback" id="isValidCodeLogin" style="display:none">
+
+<div class="input-group">
+	<span class="input-group-addon">验证码：</span>
+	<input type="text" id="validCode" name="validCode" class="form-control" required="true" data-msg-required="请填写验证码" remote="/js/validCode" data-msg-remote="验证码不正确."/>
+	<span class="input-group-addon p0">
+		<img id="validCodeImg" class="validCodeImg" title="看不清，点击图片刷新" src="" alt="验证码" style="width:100px;"/>
+		<button id="validCodeRefresh" class="hide" type="button"></button>
+	</span>
+</div>
+				</div>
+				<div class="form-group">
+					<div class="mt5 icheck">
+						<label title="公共场所慎用,下次不需要再填写帐号"><input type="checkbox"
+							name="rememberUserCode"
+							class="form-control" data-style="minimal-grey"> 记住账号</label> &nbsp; 
+						<label title="公共场所慎用,下次不需要再填写帐号和密码"><input type="checkbox"
+							name="rememberMe"
+							class="form-control" data-style="minimal-grey"> 自动登录</label>
+					</div>
+				</div>
+				<div class="form-group">
+ 				<input type="hidden" name="__url" value="${parameter.__url!}">
+				<button type="button" onclick="loginPortal()" class="btn btn-primary btn-block btn-flat"
+					id="btnSubmit" data-loading="${text('登录验证成功，正在进入...')}"
+					data-login-valid="${text('正在验证登录，请稍候...')}">${text('立即登录')}</button>
+				</div>
+</#form:form>			 
+			<div class="row">
+				<div class="col-xs-12">
+					<a href="/js/account/forgetPwd" class="pull-left">[ 忘记密码 ]</a>
+					<div class="dropdown pull-right">
+						<a href="javascript:" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+							<i class="fa icon-globe"></i> 简体中文
+						</a>
+						<ul class="dropdown-menu">
+							<li class="mt5"></li>
+								<li><a href="/js/lang/zh_CN">简体中文</a></li>
+								<li><a href="/js/lang/en">English</a></li>
+								<li><a href="/js/lang/ja_JP">日本語</a></li>
+							<li class="mt10"></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="login-copyright">
+		&copy; 2020 手环 - Powered By <a
+			href="http://jeesite.com">JeeSite V4.2.1</a>
+	</div>
+</div>
+</div>
+ 
+<% } %>
+<script src="${ctxStatic}/common/des.js?${_version}"></script>
+<script src="${ctxStatic}/jquery-toastr/2.1/toastr.min.js?${_version}"></script>
+<script>
+var secretKey = '${@Global.getConfig("shiro.loginSubmit.secretKey")}';
+
+function loginPortal() {
+
+	 
+	var d = $("#username").val(), a = $("#password")
+			.val(), b = $("#validCode").val();
+	if (secretKey != "") {
+		 
+		var parame =  {
+				username:
+					DesUtils.encode(d, secretKey),
+				password:DesUtils.encode(a, secretKey),
+				validCode:""
+		}
+		console.log(11);
+		js.loading("正在登录");
+
+		$.ajax({
+			url : "${ctx}/login",
+			type : "post",
+			data:parame,
+			success : function(text) { 
+				console.log("22")	;
+				//var flag  =text.
+				var  result  =  text.result;
+				if(result== "false"){
+					js.showMessage(text.message);
+					js.closeLoading(1);
+
+				}else  {
+					location.href="${ctx}/login"
+				}
+				
+			}
+			})
+	}
+	 
+}
+
+document.onkeydown = function(event) {
+	var e = event || window.event
+			|| arguments.callee.caller.arguments[0];
+	if (e && e.keyCode == 13) { // enter 键
+		//要做的事情
+		loginPortal();
+	}
+};
+</script>

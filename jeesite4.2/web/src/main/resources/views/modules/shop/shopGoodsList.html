@@ -1,0 +1,363 @@
+<% layout('/layouts/default.html', {title: '商品信息表管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('商品信息表管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('shop:shopGoods:edit')){ %>
+					<a href="${ctx}/shop/shopGoods/form" class="btn btn-default btnTool" title="${text('新增商品信息表')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${shopGoods}" action="${ctx}/shop/shopGoods/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('图片')}：</label>
+					<div class="control-inline">
+						<#form:input path="imgsrc" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('分类')}：</label>
+					<div class="control-inline">
+						<#form:input path="types" maxlength="111" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('商品名称')}：</label>
+					<div class="control-inline">
+						<#form:input path="name" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('销量')}：</label>
+					<div class="control-inline">
+						<#form:input path="selllength" maxlength="11" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('型号')}：</label>
+					<div class="control-inline">
+						<#form:input path="xinghao" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('生产地')}：</label>
+					<div class="control-inline">
+						<#form:input path="scd" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('市场价')}：</label>
+					<div class="control-inline">
+						<#form:input path="price1" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('销售价')}：</label>
+					<div class="control-inline">
+						<#form:input path="pirce2" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('购买得积分')}：</label>
+					<div class="control-inline">
+						<#form:input path="awardsource" maxlength="11" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('库存')}：</label>
+					<div class="control-inline">
+						<#form:input path="kc" maxlength="11" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('扣减库存')}：</label>
+					<div class="control-inline">
+						<#form:input path="miuskc" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否配送')}：</label>
+					<div class="control-inline">
+						<#form:input path="ispeisong" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否免运费')}：</label>
+					<div class="control-inline">
+						<#form:input path="isyunfei" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('总量')}：</label>
+					<div class="control-inline">
+						<#form:input path="weights" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('尺寸')}：</label>
+					<div class="control-inline">
+						<#form:input path="cc" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('状态')}：</label>
+					<div class="control-inline">
+						<#form:input path="status1" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('排序')}：</label>
+					<div class="control-inline">
+						<#form:input path="orderindex" maxlength="11" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('浏览量')}：</label>
+					<div class="control-inline">
+						<#form:input path="viewlength" maxlength="11" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('分类')}：</label>
+					<div class="control-inline">
+						<#form:input path="fenlei" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('描述')}：</label>
+					<div class="control-inline">
+						<#form:input path="desciprts" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('提交时间')}：</label>
+					<div class="control-inline">
+						<#form:input path="createtime" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('图集')}：</label>
+					<div class="control-inline">
+						<#form:input path="imgslist" maxlength="4511" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('审核状态')}：</label>
+					<div class="control-inline">
+						<#form:input path="status2" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否推送')}：</label>
+					<div class="control-inline">
+						<#form:input path="ispush" maxlength="4" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否推荐')}：</label>
+					<div class="control-inline">
+						<#form:input path="isindex" maxlength="4" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否新品')}：</label>
+					<div class="control-inline">
+						<#form:input path="isnews" maxlength="4" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('二维码链接')}：</label>
+					<div class="control-inline">
+						<#form:input path="ewmlinks" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('好评率')}：</label>
+					<div class="control-inline">
+						<#form:input path="hpl" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否积分抵扣')}：</label>
+					<div class="control-inline">
+						<#form:input path="isdikou" maxlength="4" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('需要积分')}：</label>
+					<div class="control-inline">
+						<#form:input path="needsource" maxlength="11" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否秒杀')}：</label>
+					<div class="control-inline">
+						<#form:input path="ismiaosha" maxlength="4" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('秒杀开始')}：</label>
+					<div class="control-inline">
+						<#form:input path="satrtms" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('秒杀结束')}：</label>
+					<div class="control-inline">
+						<#form:input path="endms" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('秒杀金额')}：</label>
+					<div class="control-inline">
+						<#form:input path="msmoney" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('排序')}：</label>
+					<div class="control-inline">
+						<#form:input path="showindex" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('申明')}：</label>
+					<div class="control-inline">
+						<#form:input path="shenming" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('codes')}：</label>
+					<div class="control-inline">
+						<#form:input path="codes" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('生产批号')}：</label>
+					<div class="control-inline">
+						<#form:input path="scph" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('执行标准')}：</label>
+					<div class="control-inline">
+						<#form:input path="zxbz" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('企业代码')}：</label>
+					<div class="control-inline">
+						<#form:input path="qydm" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('出厂日期')}：</label>
+					<div class="control-inline">
+						<#form:input path="ccrq" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('有效期')}：</label>
+					<div class="control-inline">
+						<#form:input path="yxq" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('商家编号')}：</label>
+					<div class="control-inline">
+						<#form:input path="bussId" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("图片")}', name:'imgsrc', index:'a.imgsrc', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/shop/shopGoods/form?rowid='+row.rowid+'" class="btnList" data-title="${text("编辑商品信息表")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("分类")}', name:'types', index:'a.types', width:150, align:"left"},
+		{header:'${text("商品名称")}', name:'name', index:'a.name', width:150, align:"left"},
+		{header:'${text("销量")}', name:'selllength', index:'a.selllength', width:150, align:"center"},
+		{header:'${text("型号")}', name:'xinghao', index:'a.xinghao', width:150, align:"left"},
+		{header:'${text("生产地")}', name:'scd', index:'a.scd', width:150, align:"left"},
+		{header:'${text("市场价")}', name:'price1', index:'a.price1', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("销售价")}', name:'pirce2', index:'a.pirce2', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("购买得积分")}', name:'awardsource', index:'a.awardsource', width:150, align:"center"},
+		{header:'${text("库存")}', name:'kc', index:'a.kc', width:150, align:"center"},
+		{header:'${text("扣减库存")}', name:'miuskc', index:'a.miuskc', width:150, align:"left"},
+		{header:'${text("是否配送")}', name:'ispeisong', index:'a.ispeisong', width:150, align:"left"},
+		{header:'${text("是否免运费")}', name:'isyunfei', index:'a.isyunfei', width:150, align:"left"},
+		{header:'${text("总量")}', name:'weights', index:'a.weights', width:150, align:"left"},
+		{header:'${text("尺寸")}', name:'cc', index:'a.cc', width:150, align:"left"},
+		{header:'${text("状态")}', name:'status1', index:'a.status1', width:150, align:"left"},
+		{header:'${text("排序")}', name:'orderindex', index:'a.orderindex', width:150, align:"center"},
+		{header:'${text("浏览量")}', name:'viewlength', index:'a.viewlength', width:150, align:"center"},
+		{header:'${text("分类")}', name:'fenlei', index:'a.fenlei', width:150, align:"left"},
+		{header:'${text("描述")}', name:'desciprts', index:'a.desciprts', width:150, align:"left"},
+		{header:'${text("提交时间")}', name:'createtime', index:'a.createtime', width:150, align:"center"},
+		{header:'${text("图集")}', name:'imgslist', index:'a.imgslist', width:150, align:"left"},
+		{header:'${text("审核状态")}', name:'status2', index:'a.status2', width:150, align:"left"},
+		{header:'${text("是否推送")}', name:'ispush', index:'a.ispush', width:150, align:"left"},
+		{header:'${text("是否推荐")}', name:'isindex', index:'a.isindex', width:150, align:"left"},
+		{header:'${text("是否新品")}', name:'isnews', index:'a.isnews', width:150, align:"left"},
+		{header:'${text("二维码链接")}', name:'ewmlinks', index:'a.ewmlinks', width:150, align:"left"},
+		{header:'${text("好评率")}', name:'hpl', index:'a.hpl', width:150, align:"left"},
+		{header:'${text("是否积分抵扣")}', name:'isdikou', index:'a.isdikou', width:150, align:"left"},
+		{header:'${text("需要积分")}', name:'needsource', index:'a.needsource', width:150, align:"center"},
+		{header:'${text("是否秒杀")}', name:'ismiaosha', index:'a.ismiaosha', width:150, align:"left"},
+		{header:'${text("秒杀开始")}', name:'satrtms', index:'a.satrtms', width:150, align:"center"},
+		{header:'${text("秒杀结束")}', name:'endms', index:'a.endms', width:150, align:"center"},
+		{header:'${text("秒杀金额")}', name:'msmoney', index:'a.msmoney', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("排序")}', name:'showindex', index:'a.showindex', width:150, align:"left"},
+		{header:'${text("申明")}', name:'shenming', index:'a.shenming', width:150, align:"left"},
+		{header:'${text("codes")}', name:'codes', index:'a.codes', width:150, align:"left"},
+		{header:'${text("生产批号")}', name:'scph', index:'a.scph', width:150, align:"left"},
+		{header:'${text("执行标准")}', name:'zxbz', index:'a.zxbz', width:150, align:"left"},
+		{header:'${text("企业代码")}', name:'qydm', index:'a.qydm', width:150, align:"left"},
+		{header:'${text("出厂日期")}', name:'ccrq', index:'a.ccrq', width:150, align:"center"},
+		{header:'${text("有效期")}', name:'yxq', index:'a.yxq', width:150, align:"center"},
+		{header:'${text("商家编号")}', name:'bussId', index:'a.buss_id', width:150, align:"left"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			<% if(hasPermi('shop:shopGoods:edit')){ %>
+				actions.push('<a href="${ctx}/shop/shopGoods/form?rowid='+row.rowid+'" class="btnList" title="${text("编辑商品信息表")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/shop/shopGoods/delete?rowid='+row.rowid+'" class="btnList" title="${text("删除商品信息表")}" data-confirm="${text("确认要删除该商品信息表吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

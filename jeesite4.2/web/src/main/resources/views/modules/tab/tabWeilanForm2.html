@@ -1,0 +1,108 @@
+
+<% layout('/layouts/default.html', {title: 'tab_weilan管理', libs: ['validate']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<#form:form id="inputForm" model="${tabWeilan}" action="${ctx}/tab/tabWeilan/save" method="post" class="form-horizontal">
+			<div class="box-body">
+				<#form:hidden path="rowid"/>
+				<div class="row">
+					<div class="col-xs-12  ">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('名称')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="name" maxlength="45" class="form-control"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6 hide">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('精度')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="lon" class="form-control number"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6 hide">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('纬度')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="lat" class="form-control number"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('半径(单位:M)')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="lines2" class="form-control number"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('规则名称')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								 							 	<#form:select path="guize" dictType="ces" blankOption="true" class="form-control" />
+								
+							</div>
+						</div>
+					</div>
+				 
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<% if (hasPermi('tab:tabWeilan:edit')){ %>
+							<button onclick="addRow()" type="button" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<% } %>
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				js.closeCurrentTabPage(function(contentWindow){
+					contentWindow.page();
+				});
+			}
+		}, "json");
+    }
+});
+
+setInterval( function(){
+	var frameId=  	window.localStorage.getItem("frameId");
+	console.log(frameId)
+		var  lineV =   $("#lines2").val();
+	console.log(lineV)
+			parent.document.getElementById(frameId).contentWindow.saveChooseHt(lineV);
+
+	},300)
+	function  addRow(){
+	var  name =   $("#name").val() || "";
+	var  lineV =   $("#lines2").val() || "";
+	var  guize =   $("#guize").val() || "";
+	if(name == "" ||  lineV == ""  ||  guize == "" ){
+		js.showMessage("请输入完整的数据");
+		return  ;
+	}
+	var frameId=  	window.localStorage.getItem("frameId");
+	parent.document.getElementById(frameId).contentWindow.saveChooseHt2(name,lineV,guize);
+
+
+}
+	</script>
+

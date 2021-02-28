@@ -1,0 +1,143 @@
+<% layout('/layouts/default.html', {title: 'tab_pachong_product管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('tab_pachong_product管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('tab:tabPachongProduct:edit')){ %>
+					<a href="${ctx}/tab/tabPachongProduct/form" class="btn btn-default btnTool" title="${text('新增tab_pachong_product')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${tabPachongProduct}" action="${ctx}/tab/tabPachongProduct/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('商品名称')}：</label>
+					<div class="control-inline">
+						<#form:input path="name" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('商家')}：</label>
+					<div class="control-inline">
+						<#form:input path="sj" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('地区')}：</label>
+					<div class="control-inline">
+						<#form:input path="dq" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('类别')}：</label>
+					<div class="control-inline">
+						<#form:input path="lb" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('品牌')}：</label>
+					<div class="control-inline">
+						<#form:input path="pp" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('产地')}：</label>
+					<div class="control-inline">
+						<#form:input path="chandi" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('型号')}：</label>
+					<div class="control-inline">
+						<#form:input path="xinghao" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('联系姓名')}：</label>
+					<div class="control-inline">
+						<#form:input path="lxxm" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('联系地址')}：</label>
+					<div class="control-inline">
+						<#form:input path="lxdz" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('电子邮箱')}：</label>
+					<div class="control-inline">
+						<#form:input path="dzyx" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('商家主页')}：</label>
+					<div class="control-inline">
+						<#form:input path="sjgw" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('创建时间')}：</label>
+					<div class="control-inline">
+						<#form:input path="createtime" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('链接地址')}：</label>
+					<div class="control-inline">
+						<#form:input path="links" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("商品名称")}', name:'name', index:'a.name', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/tab/tabPachongProduct/form?rowid='+row.rowid+'" class="btnList" data-title="${text("编辑tab_pachong_product")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("商家")}', name:'sj', index:'a.sj', width:150, align:"left"},
+		{header:'${text("地区")}', name:'dq', index:'a.dq', width:150, align:"left"},
+		{header:'${text("类别")}', name:'lb', index:'a.lb', width:150, align:"left"},
+		{header:'${text("品牌")}', name:'pp', index:'a.pp', width:150, align:"left"},
+		{header:'${text("产地")}', name:'chandi', index:'a.chandi', width:150, align:"left"},
+		{header:'${text("型号")}', name:'xinghao', index:'a.xinghao', width:150, align:"left"},
+		{header:'${text("联系姓名")}', name:'lxxm', index:'a.lxxm', width:150, align:"left"},
+		{header:'${text("联系地址")}', name:'lxdz', index:'a.lxdz', width:150, align:"left"},
+		{header:'${text("电子邮箱")}', name:'dzyx', index:'a.dzyx', width:150, align:"left"},
+		{header:'${text("商家主页")}', name:'sjgw', index:'a.sjgw', width:150, align:"left"},
+		{header:'${text("创建时间")}', name:'createtime', index:'a.createtime', width:150, align:"center"},
+		{header:'${text("链接地址")}', name:'links', index:'a.links', width:150, align:"left"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			<% if(hasPermi('tab:tabPachongProduct:edit')){ %>
+				actions.push('<a href="${ctx}/tab/tabPachongProduct/form?rowid='+row.rowid+'" class="btnList" title="${text("编辑tab_pachong_product")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/tab/tabPachongProduct/delete?rowid='+row.rowid+'" class="btnList" title="${text("删除tab_pachong_product")}" data-confirm="${text("确认要删除该tab_pachong_product吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

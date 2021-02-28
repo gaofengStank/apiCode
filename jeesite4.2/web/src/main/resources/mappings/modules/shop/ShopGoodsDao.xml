@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeesite.modules.shop.dao.ShopGoodsDao">
+	
+	<!-- 查询数据
+	<select id="findList" resultType="ShopGoods">
+		SELECT ${sqlMap.column.toSql()}
+		FROM ${sqlMap.table.toSql()}
+		<where>
+			${sqlMap.where.toSql()}
+		</where>
+		ORDER BY ${sqlMap.order.toSql()}
+	</select> -->
+	<select id="listMySc" parameterType="java.util.Map"  resultType="com.jeesite.modules.shop.entity.ShopGoods">
+	    			
+	    SELECT    t.*  from   shop_goods  t JOIN  shop_good_collect    t1    on  t.rowid =    t1.good_id
+	</select>
+</mapper>

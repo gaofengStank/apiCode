@@ -1,0 +1,111 @@
+<% layout('/layouts/default.html', {title: 'tab_order_tuihuo管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('tab_order_tuihuo管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('tab:tabOrderTuihuo:edit')){ %>
+					<a href="${ctx}/tab/tabOrderTuihuo/form" class="btn btn-default btnTool" title="${text('新增tab_order_tuihuo')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${tabOrderTuihuo}" action="${ctx}/tab/tabOrderTuihuo/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('userid')}：</label>
+					<div class="control-inline">
+						<#form:input path="userid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('orderid')}：</label>
+					<div class="control-inline">
+						<#form:input path="orderid" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('bussinessid')}：</label>
+					<div class="control-inline">
+						<#form:input path="bussinessid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('productid')}：</label>
+					<div class="control-inline">
+						<#form:input path="productid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('createtime')}：</label>
+					<div class="control-inline">
+						<#form:input path="createtime" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('tkyy')}：</label>
+					<div class="control-inline">
+						<#form:input path="tkyy" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('tkmoney')}：</label>
+					<div class="control-inline">
+						<#form:input path="tkmoney" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('updatetime')}：</label>
+					<div class="control-inline">
+						<#form:input path="updatetime" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("userid")}', name:'userid', index:'a.userid', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/tab/tabOrderTuihuo/form?rowid='+row.rowid+'" class="btnList" data-title="${text("编辑tab_order_tuihuo")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("orderid")}', name:'orderid', index:'a.orderid', width:150, align:"left"},
+		{header:'${text("bussinessid")}', name:'bussinessid', index:'a.bussinessid', width:150, align:"left"},
+		{header:'${text("productid")}', name:'productid', index:'a.productid', width:150, align:"left"},
+		{header:'${text("createtime")}', name:'createtime', index:'a.createtime', width:150, align:"center"},
+		{header:'${text("tkyy")}', name:'tkyy', index:'a.tkyy', width:150, align:"left"},
+		{header:'${text("tkmoney")}', name:'tkmoney', index:'a.tkmoney', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("updatetime")}', name:'updatetime', index:'a.updatetime', width:150, align:"center"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			<% if(hasPermi('tab:tabOrderTuihuo:edit')){ %>
+				actions.push('<a href="${ctx}/tab/tabOrderTuihuo/form?rowid='+row.rowid+'" class="btnList" title="${text("编辑tab_order_tuihuo")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/tab/tabOrderTuihuo/delete?rowid='+row.rowid+'" class="btnList" title="${text("删除tab_order_tuihuo")}" data-confirm="${text("确认要删除该tab_order_tuihuo吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

@@ -1,0 +1,126 @@
+<% layout('/layouts/default.html', {title: 'shop_business管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('shop_business管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('shop:shopBusiness:edit')){ %>
+					<a href="${ctx}/shop/shopBusiness/form" class="btn btn-default btnTool" title="${text('新增shop_business')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${shopBusiness}" action="${ctx}/shop/shopBusiness/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('商家名称')}：</label>
+					<div class="control-inline">
+						<#form:input path="name" maxlength="50" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('图片')}：</label>
+					<div class="control-inline">
+						<#form:input path="picurl" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('分类')}：</label>
+					<div class="control-inline">
+						<#form:input path="fenlei" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('详细地址')}：</label>
+					<div class="control-inline">
+						<#form:input path="address" maxlength="500" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('关注数')}：</label>
+					<div class="control-inline">
+						<#form:input path="likes_gte" maxlength="11" class="form-control width-60"/>
+						&nbsp;-&nbsp;
+						<#form:input path="likes_lte" maxlength="11" class="form-control width-60"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('收藏数')}：</label>
+					<div class="control-inline">
+						<#form:input path="collls" maxlength="11" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('当前余额')}：</label>
+					<div class="control-inline">
+						<#form:input path="totalmoney" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('城市')}：</label>
+					<div class="control-inline">
+						<#form:input path="citys" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('创建时间')}：</label>
+					<div class="control-inline">
+						<#form:input path="createtime" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('urls')}：</label>
+					<div class="control-inline">
+						<#form:input path="urls" maxlength="4511" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("商家名称")}', name:'name', index:'a.name', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/shop/shopBusiness/form?rowid='+row.rowid+'" class="btnList" data-title="${text("编辑shop_business")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("图片")}', name:'picurl', index:'a.picurl', width:150, align:"left"},
+		{header:'${text("分类")}', name:'fenlei', index:'a.fenlei', width:150, align:"left"},
+		{header:'${text("详细地址")}', name:'address', index:'a.address', width:150, align:"left"},
+		{header:'${text("关注数")}', name:'likes', index:'a.likes', width:150, align:"center"},
+		{header:'${text("收藏数")}', name:'collls', index:'a.collls', width:150, align:"center"},
+		{header:'${text("当前余额")}', name:'totalmoney', index:'a.totalmoney', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("城市")}', name:'citys', index:'a.citys', width:150, align:"left"},
+		{header:'${text("创建时间")}', name:'createtime', index:'a.createtime', width:150, align:"center"},
+		{header:'${text("urls")}', name:'urls', index:'a.urls', width:150, align:"left"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			<% if(hasPermi('shop:shopBusiness:edit')){ %>
+				actions.push('<a href="${ctx}/shop/shopBusiness/form?rowid='+row.rowid+'" class="btnList" title="${text("编辑shop_business")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/shop/shopBusiness/delete?rowid='+row.rowid+'" class="btnList" title="${text("删除shop_business")}" data-confirm="${text("确认要删除该shop_business吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

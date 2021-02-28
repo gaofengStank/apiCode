@@ -1,0 +1,384 @@
+<% layout('/layouts/default.html', {title: 'shop_order管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('shop_order管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('shop:shopOrder:edit')){ %>
+					<a href="${ctx}/shop/shopOrder/form" class="btn btn-default btnTool" title="${text('新增shop_order')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${shopOrder}" action="${ctx}/shop/shopOrder/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('userid')}：</label>
+					<div class="control-inline">
+						<#form:input path="userid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('orderids')}：</label>
+					<div class="control-inline">
+						<#form:input path="orderids" maxlength="111" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('orderstatus')}：</label>
+					<div class="control-inline">
+						<#form:input path="orderstatus" maxlength="4" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('createtime')}：</label>
+					<div class="control-inline">
+						<#form:input path="createtime" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('ordermoney')}：</label>
+					<div class="control-inline">
+						<#form:input path="ordermoney" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('yunfei')}：</label>
+					<div class="control-inline">
+						<#form:input path="yunfei" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('addresstext')}：</label>
+					<div class="control-inline">
+						<#form:input path="addresstext" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('phones')}：</label>
+					<div class="control-inline">
+						<#form:input path="phones" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('names')}：</label>
+					<div class="control-inline">
+						<#form:input path="names" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('paytype')}：</label>
+					<div class="control-inline">
+						<#form:input path="paytype" maxlength="41" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('callbackid')}：</label>
+					<div class="control-inline">
+						<#form:input path="callbackid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('notes')}：</label>
+					<div class="control-inline">
+						<#form:input path="notes" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('parame1')}：</label>
+					<div class="control-inline">
+						<#form:input path="parame1" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('parame2')}：</label>
+					<div class="control-inline">
+						<#form:input path="parame2" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('parame3')}：</label>
+					<div class="control-inline">
+						<#form:input path="parame3" maxlength="415" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('updatetime')}：</label>
+					<div class="control-inline">
+						<#form:input path="updatetime" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('istixing')}：</label>
+					<div class="control-inline">
+						<#form:input path="istixing" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('wuliuname')}：</label>
+					<div class="control-inline">
+						<#form:input path="wuliuname" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('wuno')}：</label>
+					<div class="control-inline">
+						<#form:input path="wuno" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('senddate')}：</label>
+					<div class="control-inline">
+						<#form:input path="senddate" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('商家留言')}：</label>
+					<div class="control-inline">
+						<#form:input path="xuniorderid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('xunimonry')}：</label>
+					<div class="control-inline">
+						<#form:input path="xunimonry" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('城市')}：</label>
+					<div class="control-inline">
+						<#form:input path="isjiesuan" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('isjiesuan2')}：</label>
+					<div class="control-inline">
+						<#form:input path="isjiesuan2" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('ysfs')}：</label>
+					<div class="control-inline">
+						<#form:input path="ysfs" maxlength="45" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('ips')}：</label>
+					<div class="control-inline">
+						<#form:input path="ips" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('yhjid')}：</label>
+					<div class="control-inline">
+						<#form:input path="yhjid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('yhjbh')}：</label>
+					<div class="control-inline">
+						<#form:input path="yhjbh" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('miusmoney')}：</label>
+					<div class="control-inline">
+						<#form:input path="miusmoney" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('bussinessid')}：</label>
+					<div class="control-inline">
+						<#form:input path="bussinessid" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('paytime')}：</label>
+					<div class="control-inline">
+						<#form:input path="paytime" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('peijian1')}：</label>
+					<div class="control-inline">
+						<#form:input path="peijian1" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('peijian2')}：</label>
+					<div class="control-inline">
+						<#form:input path="peijian2" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('serverlist')}：</label>
+					<div class="control-inline">
+						<#form:input path="serverlist" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('servertime')}：</label>
+					<div class="control-inline">
+						<#form:input path="servertime" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('zhaopian')}：</label>
+					<div class="control-inline">
+						<#form:input path="zhaopian" maxlength="4511" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('kaipiao')}：</label>
+					<div class="control-inline">
+						<#form:input path="kaipiao" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('isservice')}：</label>
+					<div class="control-inline">
+						<#form:input path="isservice" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('delstatus')}：</label>
+					<div class="control-inline">
+						<#form:input path="delstatus" maxlength="4" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('的')}：</label>
+					<div class="control-inline">
+						<#form:input path="kangzzhongcall" maxlength="451" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('lon')}：</label>
+					<div class="control-inline">
+						<#form:input path="lon" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('lat')}：</label>
+					<div class="control-inline">
+						<#form:input path="lat" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('wcsj')}：</label>
+					<div class="control-inline">
+						<#form:input path="wcsj" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('wcdd')}：</label>
+					<div class="control-inline">
+						<#form:input path="wcdd" maxlength="111" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('isprints')}：</label>
+					<div class="control-inline">
+						<#form:input path="isprints" maxlength="4" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("userid")}', name:'userid', index:'a.userid', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/shop/shopOrder/form?rowid='+row.rowid+'" class="btnList" data-title="${text("编辑shop_order")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("orderids")}', name:'orderids', index:'a.orderids', width:150, align:"left"},
+		{header:'${text("orderstatus")}', name:'orderstatus', index:'a.orderstatus', width:150, align:"left"},
+		{header:'${text("createtime")}', name:'createtime', index:'a.createtime', width:150, align:"center"},
+		{header:'${text("ordermoney")}', name:'ordermoney', index:'a.ordermoney', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("yunfei")}', name:'yunfei', index:'a.yunfei', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("addresstext")}', name:'addresstext', index:'a.addresstext', width:150, align:"left"},
+		{header:'${text("phones")}', name:'phones', index:'a.phones', width:150, align:"left"},
+		{header:'${text("names")}', name:'names', index:'a.names', width:150, align:"left"},
+		{header:'${text("paytype")}', name:'paytype', index:'a.paytype', width:150, align:"left"},
+		{header:'${text("callbackid")}', name:'callbackid', index:'a.callbackid', width:150, align:"left"},
+		{header:'${text("notes")}', name:'notes', index:'a.notes', width:150, align:"left"},
+		{header:'${text("parame1")}', name:'parame1', index:'a.parame1', width:150, align:"left"},
+		{header:'${text("parame2")}', name:'parame2', index:'a.parame2', width:150, align:"left"},
+		{header:'${text("parame3")}', name:'parame3', index:'a.parame3', width:150, align:"left"},
+		{header:'${text("updatetime")}', name:'updatetime', index:'a.updatetime', width:150, align:"center"},
+		{header:'${text("istixing")}', name:'istixing', index:'a.istixing', width:150, align:"left"},
+		{header:'${text("wuliuname")}', name:'wuliuname', index:'a.wuliuname', width:150, align:"left"},
+		{header:'${text("wuno")}', name:'wuno', index:'a.wuno', width:150, align:"left"},
+		{header:'${text("senddate")}', name:'senddate', index:'a.senddate', width:150, align:"center"},
+		{header:'${text("商家留言")}', name:'xuniorderid', index:'a.xuniorderid', width:150, align:"left"},
+		{header:'${text("xunimonry")}', name:'xunimonry', index:'a.xunimonry', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("城市")}', name:'isjiesuan', index:'a.isjiesuan', width:150, align:"left"},
+		{header:'${text("isjiesuan2")}', name:'isjiesuan2', index:'a.isjiesuan2', width:150, align:"left"},
+		{header:'${text("ysfs")}', name:'ysfs', index:'a.ysfs', width:150, align:"left"},
+		{header:'${text("ips")}', name:'ips', index:'a.ips', width:150, align:"left"},
+		{header:'${text("yhjid")}', name:'yhjid', index:'a.yhjid', width:150, align:"left"},
+		{header:'${text("yhjbh")}', name:'yhjbh', index:'a.yhjbh', width:150, align:"left"},
+		{header:'${text("miusmoney")}', name:'miusmoney', index:'a.miusmoney', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("bussinessid")}', name:'bussinessid', index:'a.bussinessid', width:150, align:"left"},
+		{header:'${text("paytime")}', name:'paytime', index:'a.paytime', width:150, align:"center"},
+		{header:'${text("peijian1")}', name:'peijian1', index:'a.peijian1', width:150, align:"left"},
+		{header:'${text("peijian2")}', name:'peijian2', index:'a.peijian2', width:150, align:"left"},
+		{header:'${text("serverlist")}', name:'serverlist', index:'a.serverlist', width:150, align:"left"},
+		{header:'${text("servertime")}', name:'servertime', index:'a.servertime', width:150, align:"center"},
+		{header:'${text("zhaopian")}', name:'zhaopian', index:'a.zhaopian', width:150, align:"left"},
+		{header:'${text("kaipiao")}', name:'kaipiao', index:'a.kaipiao', width:150, align:"left"},
+		{header:'${text("isservice")}', name:'isservice', index:'a.isservice', width:150, align:"left"},
+		{header:'${text("delstatus")}', name:'delstatus', index:'a.delstatus', width:150, align:"left"},
+		{header:'${text("的")}', name:'kangzzhongcall', index:'a.kangzzhongcall', width:150, align:"left"},
+		{header:'${text("lon")}', name:'lon', index:'a.lon', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("lat")}', name:'lat', index:'a.lat', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("wcsj")}', name:'wcsj', index:'a.wcsj', width:150, align:"center"},
+		{header:'${text("wcdd")}', name:'wcdd', index:'a.wcdd', width:150, align:"left"},
+		{header:'${text("isprints")}', name:'isprints', index:'a.isprints', width:150, align:"left"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			<% if(hasPermi('shop:shopOrder:edit')){ %>
+				actions.push('<a href="${ctx}/shop/shopOrder/form?rowid='+row.rowid+'" class="btnList" title="${text("编辑shop_order")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/shop/shopOrder/delete?rowid='+row.rowid+'" class="btnList" title="${text("删除shop_order")}" data-confirm="${text("确认要删除该shop_order吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>
